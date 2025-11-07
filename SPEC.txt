@@ -1,0 +1,230 @@
+THE PAPERCLIP MARKUP LANGUAGE
+
+The Paperclip Specification
+
+DRAFT
+
+
+1. INTRODUCTION
+
+Paperclip is a markup language, built to transpile to the HTML you want, without writing the HTML you want.
+This language was created to fix the limitations of needing things like preprocessors for Markdown or using HTML directly inside Markdown, which is just stupid.
+
+
+2. CORE CONCEPTS
+
+2.1 Blocks and block separation
+
+Blocks are the fundamental building units of Paperclip. At the top level, blocks are separated by empty lines (or lines with only whitespace). For nested blocks within container blocks, the separation rules may differ depending on the container type.
+
+Note that some block types (like code blocks) can contain empty lines within their content without those empty lines creating new blocks.
+
+Blocks can contain inline content, and some blocks (container blocks) can contain other blocks.
+
+Indicators of blocks always take precedence over indicators of inline elements.
+
+
+3. BLOCK ELEMENTS
+
+3.1 Paragraphs
+
+If there is nothing to indicate otherwise, a block will be a <p> tag.
+
+PAPERCLIP
+---
+This is the text of paragraph 1.
+
+This is the text of paragraph 2.
+---
+
+HTML
+---
+<p>This is the text of paragraph 1.</p>
+<p>This is the text of paragraph 2.</p>
+---
+
+
+3.2 Line breaks in paragraphs
+
+Line breaks are handled sensibly. Every new line in a paragraph block will be a line break. No need to add 2 spaces at the end.
+
+PAPERCLIP
+---
+This is a piece of text. It gets compiled to HTML.
+Line breaks are handled nicely here. This is all still paragraph 1.
+
+This is paragraph 2.
+---
+
+HTML
+---
+<p>This is a piece of text. It gets compiled to HTML.<br>
+Line breaks are handled nicely here. This is all still paragraph 1.</p>
+<p>This is paragraph 2.</p>
+---
+
+
+3.3 Headers
+
+Headers are defined with one or more tildes (~, U+007E). The number of tildes is equal to the header level. The tildes MUST be followed by a space. More than 6 tildes is NOT a valid heading.
+
+The content of headers is parsed as inline content. Headers cannot contain other blocks.
+
+PAPERCLIP
+---
+~ Header
+
+~~ Header
+
+~~~ Header
+
+~~~~ Header
+
+~~~~~ Header
+
+~~~~~~ Header
+
+~~~~~~~ Not a header
+
+~Not a header
+
+~-~~Not a header
+---
+
+HTML
+---
+<h1>Header</h1>
+<h2>Header</h2>
+<h3>Header</h3>
+<h4>Header</h4>
+<h5>Header</h5>
+<h6>Header</h6>
+<p>~~~~~~~ Not a header</p>
+<p>~Not a header</p>
+<p>~-~~Not a header</p>
+---
+
+
+4. INLINE ELEMENTS
+
+4.1 Bold (strong)
+
+Bold text is indicated by wrapping the text with asterisks (*). This produces a <strong> tag.
+
+PAPERCLIP
+---
+This is *bold text* in a paragraph.
+---
+
+HTML
+---
+<p>This is <strong>bold text</strong> in a paragraph.</p>
+---
+
+
+4.2 Italic (emphasis)
+
+Italic text is indicated by wrapping the text with pipe characters (|). This produces an <em> tag.
+
+PAPERCLIP
+---
+This is |italic text| in a paragraph.
+---
+
+HTML
+---
+<p>This is <em>italic text</em> in a paragraph.</p>
+---
+
+
+4.3 Underline
+
+Underlined text is indicated by wrapping the text with underscores (_). This produces a <u> tag.
+
+PAPERCLIP
+---
+This is _underlined text_ in a paragraph.
+---
+
+HTML
+---
+<p>This is <u>underlined text</u> in a paragraph.</p>
+---
+
+
+4.4 Inline code
+
+Inline code is indicated by wrapping the text with backticks (`). This produces a <code> tag.
+
+PAPERCLIP
+---
+This is `inline code` in a paragraph.
+---
+
+HTML
+---
+<p>This is <code>inline code</code> in a paragraph.</p>
+---
+
+
+4.5 Combining inline styles
+
+Inline styles can be combined and nested.
+
+PAPERCLIP
+---
+This is *bold and |italic| text*.
+
+This is *|bold and italic|* text.
+
+This is *bold and _underlined_* text.
+---
+
+HTML
+---
+<p>This is <strong>bold and <em>italic</em> text</strong>.</p>
+<p>This is <strong><em>bold and italic</em></strong> text.</p>
+<p>This is <strong>bold and <u>underlined</u></strong> text.</p>
+---
+
+
+==========
+
+HTML TAGS TO IMPLEMENT
+
+Block elements:
+- section?
+- h1-6
+- blockquotes
+- dl/dt/dd
+- figure/figcaption
+- hr
+- ol/ul/li
+- pre
+
+Inline elements:
+- a
+- abbr?
+- b/strong
+- code
+- dfn
+- i/em
+- s/del/ins?
+- u
+
+Table elements:
+- table/td/th/tr
+
+Interactive elements:
+- details + summary?
+
+
+==========
+
+TODO
+
+- Lists
+- Figure
+- Tables with colspan and rowspan
+
+
