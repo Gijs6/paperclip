@@ -7,8 +7,9 @@ DRAFT
 
 1. INTRODUCTION
 
-Paperclip is a markup language, built to transpile to the HTML you want, without writing the HTML you want.
-This language was created to fix the limitations of needing things like preprocessors for Markdown or using HTML directly inside Markdown, which is just stupid.
+Paperclip is a markup language designed to transpile to clean, semantic HTML without requiring you to write HTML directly. This language was created to address fundamental limitations in existing markup languages, particularly Markdown's tendency to need preprocessors, extensions or embedding raw HTML within markup to make it look how you want it to.
+
+Usability is prioritized over source readability. Paperclip is designed to be transpiled to HTML, not to be distributed in source form. The gsoal is unambiguous, explicit syntax where each construct has exactly one interpretation, eliminating parser guesswork and author confusion.
 
 
 2. CORE CONCEPTS
@@ -105,6 +106,46 @@ HTML
 ---
 
 
+3.4 Blockquotes
+
+Blockquotes are defined by wrapping content with three or more plus signs (+++) on their own lines. The opening and closing delimiters must have the same number of plus signs.
+
+Blockquotes are container blocks and can contain other block elements (paragraphs, headers, lists, nested blockquotes, etc.). The content within blockquotes is parsed as normal Paperclip blocks.
+
+PAPERCLIP
+---
++++
+Blockquote
++++
+---
+
+HTML
+---
+<blockquote>
+<p>Blockquote</p>
+</blockquote>
+---
+
+
+3.5 Code blocks
+
+Code blocks are defined by wrapping content with three backticks (```) on their own lines.
+
+Content inside code blocks is not parsed as Paperclip. It is treated as raw text and preserved exactly as written.
+
+PAPERCLIP
+---
+```
+code
+```
+---
+
+HTML
+---
+<pre><code>code</code></pre>
+---
+
+
 4. INLINE ELEMENTS
 
 4.1 Bold (strong)
@@ -188,43 +229,36 @@ HTML
 ---
 
 
-==========
+4.6 Links
 
-HTML TAGS TO IMPLEMENT
+Links are defined using angle brackets (<>) containing a URL. For links with custom text, the text is placed in curly braces ({}) immediately before the URL in angle brackets.
 
-Block elements:
-- section?
-- h1-6
-- blockquotes
-- dl/dt/dd
-- figure/figcaption
-- hr
-- ol/ul/li
-- pre
+Links can contain other inline elements within the link text (when using the {text}<url> syntax).
 
-Inline elements:
-- a
-- abbr?
-- b/strong
-- code
-- dfn
-- i/em
-- s/del/ins?
-- u
+PAPERCLIP
+---
+<https://example.org>
 
-Table elements:
-- table/td/th/tr
+{Website}<https://example.org>
+---
 
-Interactive elements:
-- details + summary?
+HTML
+---
+<p><a href="https://example.org">https://example.org</a></p>
+<p><a href="https://example.org">Website</a></p>
+---
 
 
-==========
+4.7 Math
 
-TODO
+Math expressions are wrapped in dollar signs ($). Content inside math expressions is not parsed as Paperclip. The math content is wrapped in a <span> tag for easy styling.
 
-- Lists
-- Figure
-- Tables with colspan and rowspan
+PAPERCLIP
+---
+$math$
+---
 
-
+HTML
+---
+<p><span>$math$</span></p>
+---
